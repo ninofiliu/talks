@@ -1,11 +1,7 @@
-# Welcome to [Slidev](https://github.com/slidevjs/slidev)!
+# Weird Web APIs I love to use when making art in the browser
 
-To start the slide show:
+Slides from my talk at the QueerJS 2024
 
-- `npm install`
-- `npm run dev`
-- visit http://localhost:3030
+Content is in [./slides.md](./slides.md)
 
-Edit the [slides.md](./slides.md) to see the changes.
-
-Learn more about Slidev on [documentations](https://sli.dev/).
+Powered by [Slidev](https://sli.dev/)
