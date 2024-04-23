@@ -12,7 +12,7 @@ mdc: true
 
 By Nino Filiu
 
-[github.com/ninofiliu/talk-queerjs2024](https://github.com/ninofiliu/talk-queerjs2024)
+[github.com/ninofiliu/talks](https://github.com/ninofiliu/talks)
 
 ---
 
@@ -91,78 +91,41 @@ ctx.stroke();
 
 # Canvas API
 
-Reading pixel data of images and videos
+More fun canvas capabilities
 
-```html
-<canvas></canvas> <img src="/my-pic" />
-```
+Supports text
 
 ```ts
-const canvas = document.querySelector("canvas")!;
-const ctx = canvas.getContext("2d")!;
-
-const img = document.querySelector("img");
-canvas.width = img.width;
-canvas.height = img.height;
-ctx.drawImage(img, 0, 0, img.width, img.height);
-
-const imageData = ctx.getImageData(0, 0, img.width, img.height);
-
-imageData.width; // number
-imageData.height; // number
-imageData.data; // number[]
+ctx.font = "50px Roboto";
+ctx.fillText("Hello World", 0, 0);
 ```
 
-- 0..3 = rgba top left pixel
-- 4..7 = rgba of the one next to it
-- ...
+Painting images
 
----
+```ts
+ctx.drawImage(document.querySelector("img"), 0, 0);
+```
 
-# Canvas API
-
-Paints the top left pixel half opaque red
+Read pixel data
 
 ```ts
 const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-imageData.data[0] = 255;
-imageData.data[1] = 0;
-imageData.data[2] = 0:
-imageData.data[3] = 128:
+imageData.data[2] = 255;
 ctx.putImageData(imageData, 0, 0);
+```
+
+Encode image
+
+```ts
+canvas.toDataURL("image/jpg", 0.9); // data:image/jpg;base64,abcd...
 ```
 
 ---
 
-# Canvas API
+layout: image
+image: /canvas0.png
 
-Image converter in 20 lines
-
-```html
-File: <input type="file" accept="image/*" /><br />
-Convert to: <input value="image/jpeg" /><br />
-Quality: <input type="number" min="0" max="1" step="0.01" value="0.9" /><br />
-<button>Convert</button><br />
-<img />
-```
-
-```ts
-const [fileInput, typeInput, qualityInput] = document.querySelectorAll("input");
-const outImg = document.querySelector("img");
-document.querySelector("button").addEventListener("click", async () => {
-  const [file] = fileInput.files;
-  if (!file) return alert("file required");
-  const srcImg = document.createElement("img");
-  srcImg.src = URL.createObjectURL(file);
-  await srcImg.decode();
-  const canvas = document.createElement("canvas");
-  canvas.width = srcImg.width;
-  canvas.height = srcImg.height;
-  const ctx = canvas.getContext("2d");
-  ctx.drawImage(srcImg, 0, 0);
-  outImg.src = canvas.toDataURL(typeInput.value, +qualityInput.value);
-});
-```
+---
 
 ---
 
@@ -260,7 +223,7 @@ WebGPU: successor to WebGL, can ask the GPU to execute arbitrary tasks, not just
 
 ---
 
-# WebGl
+# WebGL
 
 Draw one triangle: part 1
 
@@ -283,7 +246,7 @@ void main() {
 
 ---
 
-# WebGl
+# WebGL
 
 Draw one triangle: part 2
 
@@ -309,7 +272,7 @@ const createShader = (
 
 ---
 
-# WebGl
+# WebGL
 
 Draw one triangle: part 3
 
@@ -340,7 +303,7 @@ const program = createProgram(gl, vertexShader, fragmentShader);
 
 ---
 
-# WebGl
+# WebGL
 
 Draw one triangle: part 4
 
@@ -369,6 +332,17 @@ gl.drawArrays(gl.TRIANGLES, 0, 3);
 
 ---
 
+layout: image-right
+image: /webgl_triangle.png
+
+---
+
+# WebGL
+
+Output
+
+---
+
 # WebGL
 
 Made with WebGL
@@ -383,7 +357,7 @@ Made with WebGL
 
 ---
 
-# WebGL
+# WebGL + TensorflowJS
 
 Detect faces in webcam stream
 
@@ -426,13 +400,7 @@ Fine-grained sound manipulation in the browser if you need more that `<audio>`'s
 - analysis node (Fourier transform)
 - node graph of all these
 
----
-
-# Web Audio
-
-Some funky
-
-- [Simple microphone spectrogram](https://codepen.io/ninofiliu/pen/XWENQZm)
+Example: [Simple microphone spectrogram](https://codepen.io/ninofiliu/pen/XWENQZm)
 
 ---
 
@@ -452,7 +420,7 @@ Promising at first, but personally had more fun with
 
 Gives low-level access to individual frames of a video
 
-Ok... but why?
+I really like this API, here's why
 
 ---
 
@@ -486,4 +454,8 @@ That's why I released [Supermosh](https://supermosh.github.io)
 
 # Thanks!
 
+:)
+
 [ninofiliu.com](https://ninofiliu.com/)
+
+[github.com/ninofiliu/talks](https://github.com/ninofiliu/talks)
