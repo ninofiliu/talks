@@ -134,17 +134,57 @@ ctx.putImageData(imageData, 0, 0);
 
 ---
 
+# Canvas API
+
+Image converter in 20 lines
+
+```html
+File: <input type="file" accept="image/*" /><br />
+Convert to: <input value="image/jpeg" /><br />
+Quality: <input type="number" min="0" max="1" step="0.01" value="0.9" /><br />
+<button>Convert</button><br />
+<img />
+```
+
+```ts
+const [fileInput, typeInput, qualityInput] = document.querySelectorAll("input");
+const outImg = document.querySelector("img");
+document.querySelector("button").addEventListener("click", async () => {
+  const [file] = fileInput.files;
+  if (!file) return alert("file required");
+  const srcImg = document.createElement("img");
+  srcImg.src = URL.createObjectURL(file);
+  await srcImg.decode();
+  const canvas = document.createElement("canvas");
+  canvas.width = srcImg.width;
+  canvas.height = srcImg.height;
+  const ctx = canvas.getContext("2d");
+  ctx.drawImage(srcImg, 0, 0);
+  outImg.src = canvas.toDataURL(typeInput.value, +qualityInput.value);
+});
+```
+
+---
+
 # WebUSB
 
-Allows the web to speak to USB devices
-
-Groundbreaking in some industries, but it was such a hassle to use it IMO
+Allows navigators to communicate with USB devices
 
 - poor browsing support
 - OS-dependent permissions
 - "raw" USB protocol
 
+Groundbreaking in some industries, but it was such a hassle to use it IMO.
+
 If you can use another API, do it
+
+---
+
+# Gamepad API
+
+Allows navigators to communicate with gamepads
+
+<Youtube id="pIIHJ-NIyes"/>
 
 ---
 
@@ -183,7 +223,7 @@ for (const input of access.inputs) {
 
 ---
 
-# WebMIDi
+# WebMIDI
 
 Play a note on all outputs
 
@@ -206,7 +246,7 @@ Sacrifice Demo
 
 What are they?
 
-GPUs: many thousand times more cores than CPUs, but that can only run a few programs at a time
+GPUs: more cores than CPUs, but can only run a few programs over all of them
 
 Useful for graphics programming (same programs for many pixels)
 
@@ -222,9 +262,7 @@ WebGPU: successor to WebGL, can ask the GPU to execute arbitrary tasks, not just
 
 # WebGl
 
-hello world
-
-Drawing one triangle on the screen takes at least 70 lines :p
+Draw one triangle: part 1
 
 ```ts
 const vertexShaderSource = `#version 300 es
@@ -241,7 +279,15 @@ void main() {
   outColor = vec4(1, 0, 0.5, 1);
 }
 `;
+```
 
+---
+
+# WebGl
+
+Draw one triangle: part 2
+
+```ts
 const x = <T>(x: T | null | undefined): T => {
   if (x == null) throw new Error("should not be nullish");
   return x;
@@ -259,7 +305,15 @@ const createShader = (
     throw new Error(`${gl.getShaderInfoLog(shader)}`);
   return shader;
 };
+```
 
+---
+
+# WebGl
+
+Draw one triangle: part 3
+
+```ts
 const createProgram = (
   gl: WebGL2RenderingContext,
   vertexShader: WebGLShader,
@@ -273,11 +327,8 @@ const createProgram = (
     throw new Error(`${gl.getProgramInfoLog(program)}`);
   return program;
 };
-
 const canvas = document.createElement("canvas");
-document.body.append(canvas);
 const gl = x(canvas.getContext("webgl2"));
-
 const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
 const fragmentShader = createShader(
   gl,
@@ -285,8 +336,17 @@ const fragmentShader = createShader(
   fragmentShaderSource
 );
 const program = createProgram(gl, vertexShader, fragmentShader);
+```
+
+---
+
+# WebGl
+
+Draw one triangle: part 4
+
+```ts
 const locations = {
-  a_position: gl.getAttribLocation(program, "a_position"),
+  a_position:,
 };
 gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
 gl.bufferData(
@@ -303,6 +363,7 @@ gl.clearColor(0, 0, 0, 0);
 gl.clear(gl.COLOR_BUFFER_BIT);
 gl.useProgram(program);
 gl.bindVertexArray(vao);
+
 gl.drawArrays(gl.TRIANGLES, 0, 3);
 ```
 
@@ -318,13 +379,111 @@ Made with WebGL
 - [Womp](https://womp.com/index): same, but focused on smooth shapes
 - [Cannon](https://pmndrs.github.io/cannon-es/): 3D physics library
 - [Shadertoy](https://www.shadertoy.com/): shader social network
+- [TensorflowJS](https://www.tensorflow.org/js): machine learning in the browser, including live pose detection & co
 
-# Canvas API
+---
 
-# WebCodecs
+# WebGL
 
-# Gamepad API
+Detect faces in webcam stream
+
+```ts
+import "@mediapipe/face_detection";
+import "@tensorflow/tfjs-core";
+import "@tensorflow/tfjs-backend-webgl";
+import * as faceDetection from "@tensorflow-models/face-detection";
+
+const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+const video = document.createElemnt("video");
+video.srcObject = stream;
+await video.play();
+const faceDetector = await faceDetection.createDetector(
+  faceDetection.SupportedModels.MediaPipeFaceDetector,
+  {
+    runtime: "mediapipe",
+    solutionPath: "/pkgs/@mediapipe/face_detection",
+  }
+);
+
+const loop = () => {
+  const faces = await faceDetector.estimateFaces(video);
+  requestAnimationFrame(loop);
+};
+loop();
+```
+
+---
 
 # Web Audio
 
-# Made with WebGPU: TensorflowJS
+Fine-grained sound manipulation in the browser if you need more that `<audio>`'s `.play()` and `.pause()`
+
+- samples (eg: `song.mp3`, `kick.wav`)
+- audio generation (sine wave, triangle wav, custom...)
+- amplitude modulation
+- frequency modulation
+- audio effects (filters, reverb, compression...)
+- analysis node (Fourier transform)
+- node graph of all these
+
+---
+
+# Web Audio
+
+Some funky
+
+- [Simple microphone spectrogram](https://codepen.io/ninofiliu/pen/XWENQZm)
+
+---
+
+# Web Audio
+
+meh/10
+
+Promising at first, but personally had more fun with
+
+- [TouchDesigner](https://derivative.ca/)
+- [Ableton](https://www.ableton.com/en/)
+- [Vital](https://vital.audio/)
+
+---
+
+# Web Codecs
+
+Gives low-level access to individual frames of a video
+
+Ok... but why?
+
+---
+
+# Web Codecs
+
+How does .mp4 lossy-compresses stuff?
+
+Encoding all frames as images would take too much space on disk, so we do this instead:
+
+1. Exceptionally encode first frame as image
+2. Encode "block movement" since last frame
+3. Repeat as many times as possible
+
+Movements are spatially uniform so output look ok
+
+Only one movement per block is encoded, instead of RGBA for each pixel of the block, so we save space
+
+---
+
+# Web Codecs
+
+Datamosh
+
+Playing these frames in an order they're not supposed to be played at yields visually [interesting results](https://www.instagram.com/reel/Cc0R3ZVjHrH/)
+
+But the usual workflow is pretty hardcore technically
+
+That's why I released [Supermosh](https://supermosh.github.io)
+
+---
+
+# Thanks!
+
+[ninofiliu.com](https://ninofiliu.com/)
