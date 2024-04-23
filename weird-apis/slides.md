@@ -53,10 +53,8 @@ We're hiring!
 💬 [Welcome To The Jungle](https://www.welcometothejungle.com/fr/companies/toucan-toco)
 
 ---
-
 layout: image-right
 image: /canvas_line.png
-
 ---
 
 # Canvas API
@@ -121,10 +119,18 @@ canvas.toDataURL("image/jpg", 0.9); // data:image/jpg;base64,abcd...
 ```
 
 ---
-
 layout: image
 image: /canvas0.png
+---
 
+---
+layout: image
+image: /canvas1.png
+---
+
+---
+layout: image
+image: /canvas2.png
 ---
 
 ---
@@ -331,10 +337,8 @@ gl.drawArrays(gl.TRIANGLES, 0, 3);
 ```
 
 ---
-
 layout: image-right
 image: /webgl_triangle.png
-
 ---
 
 # WebGL
@@ -385,6 +389,14 @@ const loop = () => {
 };
 loop();
 ```
+
+---
+
+# WebGL + TensorflowJS
+
+Used "in production"
+
+[First Contact](https://ninofiliu.com/first-contact/)
 
 ---
 
