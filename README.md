@@ -7,7 +7,7 @@ Source materials from talks I gave here and there
 Presentations are powered by [Slidev](https://sli.dev/) so there is one folder per talk that you can either
 
 - read in markdown format (in `slides.md` of each folder)
-- read the png of rendered slides (in `slides-export.md` of each folder)
+- read rendered slides (in `slides-export.pdf` of each folder)
 - run locally
   ```sh
   git clone git@github.com:ninofiliu/talks
