@@ -26,3 +26,18 @@ addEventListener("gamepadconnected", (evt) => {
   loop();
 });
 </script>
+
+<style>
+@import url("https://fonts.googleapis.com/css2?family=VT323&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Share+Tech&display=swap");
+
+* {
+  font-family: "Share Tech", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+strong {
+  color: lime;
+}
+</style>
