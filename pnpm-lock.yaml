@@ -24,6 +24,9 @@ importers:
       playwright-chromium:
         specifier: ^1.49.0
         version: 1.49.0
+      prettier:
+        specifier: ^3.3.3
+        version: 3.3.3
 
 packages:
 

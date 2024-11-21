@@ -38,6 +38,6 @@ addEventListener("gamepadconnected", (evt) => {
 }
 
 strong {
-  color: lime;
+  color: yellow;
 }
 </style>
